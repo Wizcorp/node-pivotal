@@ -7,7 +7,7 @@
   "author" : "Marc Trudel <mtrudel@wizcorp.jp>",
   "contributors" : [
   ],
-  "engines" {
+  "engines" : {
       "node": ">=0.4.12",
   },
   "main" : "index.js",
