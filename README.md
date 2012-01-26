@@ -1,4 +1,4 @@
-= node-pivotal : Node.JS API Library for PivotalTracker
+# node-pivotal : Node.JS API Library for PivotalTracker
 
 License: MIT
 
@@ -6,7 +6,7 @@ To install:
 
     _npm install pivotal_
 
-== To use:
+## To use:
 
 ```javascript
 var pivotal = require("pivotal");
@@ -15,19 +15,19 @@ pivotal.useToken("myToken");
 
 You can also retrieve the token initially by using the pivotal.getToken function
 
-== For more information:
+## For more information:
 
 - [PivotalTracker API v3 Documentation][https://www.pivotaltracker.com/help/api?version=v3]
 
-== API methods
-===pivotal.getToken : retrieve a user's token
+## API methods
+### pivotal.getToken : retrieve a user's token
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#retrieve_token_post
 
 arguments:
     user : user name (email)
     pass : the user's password
-===pivotal.useToken : set the token to use for all Pivotal callso
+### pivotal.useToken : set the token to use for all Pivotal callso
 
 arguments:
     token: A valid Pivotal Token
@@ -47,13 +47,13 @@ arguments:
 this.getProjects : get all the projects you have access to
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#get_project_all_projects
-===pivotal.getProject : access a project
+### pivotal.getProject : access a project
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#get_project_info
 
 arguments:
     id (int) : id of the project
-===pivotal.addProject : create a project
+### pivotal.addProject : create a project
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#add_project
 
@@ -63,20 +63,20 @@ arguments:
         iteration_length (int)          : Iteration length
         no_owner (boolean, optional)    : Does the project have an owner?
     }
-===pivotal.getMemberships : get the members of this projects
+### pivotal.getMemberships : get the members of this projects
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#get_memberships
 
 arguments:
     projectId (int) : id of the project
-===pivotal.getMembership : get a single member of this projects
+### pivotal.getMembership : get a single member of this projects
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#get_membership_info
 
 arguments:
     projectId (int)     : id of the project
     membershipId (int)  : id of the member
-===pivotal.addMembership : add a member to this projects
+### pivotal.addMembership : add a member to this projects
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#add_membership
 
@@ -93,14 +93,14 @@ arguments:
 
 Note: The user does not have to be in the system already. He will receieve
 an email asking him to join if he does not have a project already.
-===pivotal.removeMembership : remove a single member of this projects
+### pivotal.removeMembership : remove a single member of this projects
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#remove_membership
 
 arguments:
     projectId (int)     : id of the project
     membershipId (int)  : id of the member
-===pivotal.getIterations : get a project list of iterations
+### pivotal.getIterations : get a project list of iterations
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
 
@@ -220,7 +220,7 @@ arguments:
     projectId (int)     : id of the project
     storyId (int)       : id of the story
     taskId (int)        : id of the task
-===pivotal.addTask : add a task to a story
+### pivotal.addTask : add a task to a story
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#add_task
 
@@ -231,7 +231,7 @@ arguments:
         description : text of the task
         complete    : true of false
     }
-===pivotal.updateTask : add a task to a story
+### pivotal.updateTask : add a task to a story
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#update_task
 
@@ -243,7 +243,7 @@ arguments:
         description : text of the task
         complete    : true of false
     }
-===pivotal.removeTask : remove a task from a story
+### pivotal.removeTask : remove a task from a story
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#delete_task
 

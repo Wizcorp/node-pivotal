@@ -1,5 +1,5 @@
 /**
-    = node-pivotal : Node.JS API Library for PivotalTracker
+    # node-pivotal : Node.JS API Library for PivotalTracker
 
     License: MIT
 
@@ -7,7 +7,7 @@
 
         _npm install pivotal_
 
-    == To use:
+    ## To use:
 
     ```javascript
     var pivotal = require("pivotal");
@@ -16,11 +16,11 @@
 
     You can also retrieve the token initially by using the pivotal.getToken function
 
-    == For more information:
+    ## For more information:
 
     - [PivotalTracker API v3 Documentation][https://www.pivotaltracker.com/help/api?version=v3]
 
-    == API methods
+    ## API methods
 */
 var xml2js      = require("xml2js"),
     url         = require("url"),
@@ -38,7 +38,7 @@ var pivotal = {
 };
 
 /**
-    ===pivotal.getToken : retrieve a user's token
+    ### pivotal.getToken : retrieve a user's token
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#retrieve_token_post
 
@@ -59,7 +59,7 @@ pivotal.getToken = function (user, pass, cb) {
 };
 
 /**
-    ===pivotal.useToken : set the token to use for all Pivotal callso
+    ### pivotal.useToken : set the token to use for all Pivotal callso
 
     arguments:
         token: A valid Pivotal Token
@@ -105,7 +105,7 @@ pivotal.getProjects = function (cb) {
 };
 
 /**
-    ===pivotal.getProject : access a project
+    ### pivotal.getProject : access a project
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#get_project_info
 
@@ -117,7 +117,7 @@ pivotal.getProject = function (projectId, cb) {
 };
 
 /**
-    ===pivotal.addProject : create a project
+    ### pivotal.addProject : create a project
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#add_project
 
@@ -138,7 +138,7 @@ pivotal.addProject = function (projectData, cb) {
 };
 
 /**
-    ===pivotal.getMemberships : get the members of this projects
+    ### pivotal.getMemberships : get the members of this projects
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#get_memberships
 
@@ -150,7 +150,7 @@ pivotal.getMemberships = function (projectId, cb) {
 };
 
 /**
-    ===pivotal.getMembership : get a single member of this projects
+    ### pivotal.getMembership : get a single member of this projects
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#get_membership_info
 
@@ -163,7 +163,7 @@ pivotal.getMembership = function (projectId, membershipId, cb) {
 };
 
 /**
-    ===pivotal.addMembership : add a member to this projects
+    ### pivotal.addMembership : add a member to this projects
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#add_membership
 
@@ -186,7 +186,7 @@ pivotal.addMembership = function (projectId, membershipData, cb) {
 };
 
 /**
-    ===pivotal.removeMembership : remove a single member of this projects
+    ### pivotal.removeMembership : remove a single member of this projects
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#remove_membership
 
@@ -199,7 +199,7 @@ pivotal.removeMembership = function (projectId, membershipId, cb) {
 };
 
 /**
-    ===pivotal.getIterations : get a project list of iterations
+    ### pivotal.getIterations : get a project list of iterations
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
 
@@ -409,7 +409,7 @@ pivotal.getTask = function (projectId, storyId, taskId, cb) {
 };
 
 /**
-    ===pivotal.addTask : add a task to a story
+    ### pivotal.addTask : add a task to a story
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#add_task
 
@@ -426,7 +426,7 @@ pivotal.addTask = function (projectId, storyId, taskData, cb) {
 };
 
 /**
-    ===pivotal.updateTask : add a task to a story
+    ### pivotal.updateTask : add a task to a story
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#update_task
 
@@ -444,7 +444,7 @@ pivotal.updateTask = function (projectId, storyId, taskId, taskData, cb) {
 };
 
 /**
-    ===pivotal.removeTask : remove a task from a story
+    ### pivotal.removeTask : remove a task from a story
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#delete_task
 
