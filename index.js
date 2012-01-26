@@ -21,6 +21,7 @@
     - [PivotalTracker API v3 Documentation](https://www.pivotaltracker.com/help/api?version=v3 "PivotalTracker")
 
     ## API methods
+
 */
 var xml2js      = require("xml2js"),
     url         = require("url"),
@@ -46,6 +47,7 @@ var pivotal = {
 
     + user : user name (email)
     + pass : the user's password
+
 */
 pivotal.getToken = function (user, pass, cb) {
     this.apiCall("POST", ["tokens", "active"], null, querystring.stringify({"username": user, "password" : pass}), function (res) {
@@ -65,6 +67,7 @@ pivotal.getToken = function (user, pass, cb) {
     __Arguments__
 
     + token: A valid Pivotal Token
+
 */
 pivotal.useToken = function (token) {
     this.token = token;
@@ -91,6 +94,7 @@ pivotal.useToken = function (token) {
         newer_than_version  : allows restricting the activity feed to only those items that have a greater than supplied version
     }
     ```
+
 */
 pivotal.getActivities = function (filters, cb) {
     var url = ["activities"];
@@ -121,6 +125,7 @@ pivotal.getProjects = function (cb) {
     __Arguments__
 
     + id (int) : id of the project
+
 */
 pivotal.getProject = function (projectId, cb) {
     pivotal.apiCall("GET", ["projects", projectId], null, null, null, cb);
@@ -133,6 +138,7 @@ pivotal.getProject = function (projectId, cb) {
 
     __Arguments__
     + project : Data of the project to add
+
     ```javascript
     {
         name (string)                   : The project's name
@@ -140,6 +146,7 @@ pivotal.getProject = function (projectId, cb) {
         no_owner (boolean, optional)    : Does the project have an owner?
     }
     ```
+
 */
 pivotal.addProject = function (projectData, cb) {
 
@@ -158,6 +165,7 @@ pivotal.addProject = function (projectData, cb) {
     __Arguments__
 
     + projectId (int) : id of the project
+
 */
 pivotal.getMemberships = function (projectId, cb) {
     pivotal.apiCall("GET", ["projects", projectId, "memberships"], null, null, null, cb);
@@ -172,6 +180,7 @@ pivotal.getMemberships = function (projectId, cb) {
 
     + projectId (int)     : id of the project
     + membershipId (int)  : id of the member
+
 */
 pivotal.getMembership = function (projectId, membershipId, cb) {
     pivotal.apiCall("GET", ["projects", projectId, "memberships", membershipId], null, null, null, cb);
@@ -186,6 +195,7 @@ pivotal.getMembership = function (projectId, membershipId, cb) {
 
     + projectId (int)          : id of the project
     + membershipData : Data of the new member
+
     ```javascript
     {
         role : Member or Owner
@@ -199,6 +209,7 @@ pivotal.getMembership = function (projectId, membershipId, cb) {
 
     __Note__: The user does not have to be in the system already. He will receieve
     an email asking him to join if he does not have a project already.
+
 */
 pivotal.addMembership = function (projectId, membershipData, cb) {
     pivotal.apiCall("POST", ["projects", projectId, "memberships"], null, { "membership" : membershipData }, null, cb);
@@ -213,6 +224,7 @@ pivotal.addMembership = function (projectId, membershipData, cb) {
 
     + projectId (int)     : id of the project
     + membershipId (int)  : id of the member
+
 */
 pivotal.removeMembership = function (projectId, membershipId, cb) {
     pivotal.apiCall("DELETE", ["projects", projectId, "memberships", membershipId], null, null, null, cb);
@@ -227,6 +239,7 @@ pivotal.removeMembership = function (projectId, membershipId, cb) {
 
     + projectId (int)     : id of the project
     + membershipId (int)  : id of the member
+
 */
 pivotal.getIterations = function (projectId, filters, cb) {
 
@@ -249,6 +262,7 @@ pivotal.getIterations = function (projectId, filters, cb) {
 
     + projectId (int)     : id of the project
     + filters : Limits the return data
+
     ```javascript
     {
         limit               : maximum return entries
@@ -256,6 +270,7 @@ pivotal.getIterations = function (projectId, filters, cb) {
         filter              : search string to use (ex: filter=label:"needs feedback" type:bug)
     }
     ```
+
 */
 pivotal.getStories = function (projectId, filters, cb) {
     pivotal.apiCall("GET", ["projects", projectId, "stories"], filters, null, null, cb);
@@ -270,6 +285,7 @@ pivotal.getStories = function (projectId, filters, cb) {
 
     + projectId (int)     : id of the project
     + storyId (int)       : id of the story
+
 */
 pivotal.getStory = function (projectId, storyId, cb) {
     pivotal.apiCall("GET", ["projects", projectId, "stories", storyId], null, null, null, cb);
@@ -288,6 +304,7 @@ pivotal.getStory = function (projectId, storyId, cb) {
 
     + projectId (int)     : id of the project
     + storyData : data of the story
+
     ```javascript
     {
         name           : Name of this story
@@ -300,6 +317,7 @@ pivotal.getStory = function (projectId, storyId, cb) {
                        but I dont know if this is an actual limitation)
     }
     ```
+
 */
 pivotal.addStory = function (projectId, storyData, cb) {
     pivotal.apiCall("POST", ["projects", projectId, "stories"], null, { story : storyData }, null, cb);
@@ -315,6 +333,7 @@ pivotal.addStory = function (projectId, storyData, cb) {
     + projectId (int)     : id of the project
     + storyId (int)       : id of the story
     + fileData : information of file to upload
+
     ```javascript
     {
         name : filename of the file after upload
@@ -323,6 +342,7 @@ pivotal.addStory = function (projectId, storyData, cb) {
                simply put the data of the file in there instead
     }
     ```
+
 */
 pivotal.addStoryAttachment = function (projectId, storyId, fileData, cb) {
     pivotal.apiCall("POST", ["projects", projectId, "stories", storyId, "attachments"], null, null, fileData, cb);
@@ -338,6 +358,7 @@ pivotal.addStoryAttachment = function (projectId, storyId, fileData, cb) {
     + projectId (int)     : id of the project
     + storyId (int)       : id of the story
     + comment (string)    : The text of the comment to add
+
 */
 pivotal.addStoryComment = function (projectId, storyId, comment, cb) {
     pivotal.apiCall("PUT", ["projects", projectId, "stories", storyId, "notes"], null, { note: { text : comment } }, null, cb);
@@ -352,6 +373,7 @@ pivotal.addStoryComment = function (projectId, storyId, comment, cb) {
 
     + projectId (int)     : id of the project
     + storyData : data of the story
+
     ```javascript
     {
         project_id     : Id of the project
@@ -365,6 +387,7 @@ pivotal.addStoryComment = function (projectId, storyId, comment, cb) {
                        but I dont know if this is an actual limitation)
     }
     ```
+
 */
 pivotal.updateStory = function (projectId, storyId, storyData, cb) {
     pivotal.apiCall("POST", ["projects", projectId, "stories", storyId], null, { story : storyData }, null, cb);
@@ -380,12 +403,14 @@ pivotal.updateStory = function (projectId, storyId, storyData, cb) {
     + projectId (int)     : id of the project
     + storyId (int)       : id of the story
     + moveData : Information on how the move should happen
+
     ```javascript
     {
         target : Id of the destination story
         move   : before or after (the target story)
     }
     ```
+
 */
 pivotal.moveStory = function (projectId, storyId, moveData, cb) {
 
@@ -410,6 +435,7 @@ pivotal.moveStory = function (projectId, storyId, moveData, cb) {
 
     + projectId (int)     : id of the project
     + storyId (int)       : id of the story
+
 */
 pivotal.removeStory = function (projectId, storyId, cb) {
     pivotal.apiCall("DELETE", ["projects", projectId, "stories", storyId], null, null, null, cb);
@@ -423,6 +449,7 @@ pivotal.removeStory = function (projectId, storyId, cb) {
     __Arguments__
 
     + projectId (int)     : id of the project
+
 */
 pivotal.deliverAllFinishedStories = function (projectId, cb) {
     pivotal.apiCall("PUT", ["projects", projectId, "stories", "deliver_all_finished"], null, null, null, cb);
@@ -437,6 +464,7 @@ pivotal.deliverAllFinishedStories = function (projectId, cb) {
 
     + projectId (int)     : id of the project
     + storyId (int)       : id of the story
+
 */
 pivotal.getTasks = function (projectId, storyId, cb) {
     pivotal.apiCall("GET", ["projects", projectId, "stories", storyId, "tasks"], null, null, null, cb);
@@ -452,6 +480,7 @@ pivotal.getTasks = function (projectId, storyId, cb) {
     + projectId (int)     : id of the project
     + storyId (int)       : id of the story
     + taskId (int)        : id of the task
+
 */
 pivotal.getTask = function (projectId, storyId, taskId, cb) {
     pivotal.apiCall("GET", ["projects", projectId, "stories", storyId, "tasks", taskId], null, null, null, cb);
@@ -467,12 +496,14 @@ pivotal.getTask = function (projectId, storyId, taskId, cb) {
     + projectId (int)     : id of the project
     + storyId (int)       : id of the story
     + taskData : data of the task
+
     ```javascript
     {
         description : text of the task
         complete    : true of false
     }
     ```
+
 */
 pivotal.addTask = function (projectId, storyId, taskData, cb) {
     pivotal.apiCall("POST", ["projects", projectId, "stories", storyId, "tasks"], null, { task : taskData }, null, cb);
@@ -489,12 +520,14 @@ pivotal.addTask = function (projectId, storyId, taskData, cb) {
     + storyId (int)       : id of the story
     + taskId (int)        : id of the task
     + taskData : data of the task
+
     ```javascript
     {
         description : text of the task
         complete    : true of false
     }
     ```
+
 */
 pivotal.updateTask = function (projectId, storyId, taskId, taskData, cb) {
     pivotal.apiCall("PUT", ["projects", projectId, "stories", storyId, "tasks", taskId], null, { task : taskData }, null, cb);
@@ -510,6 +543,7 @@ pivotal.updateTask = function (projectId, storyId, taskId, taskData, cb) {
     + projectId (int)     : id of the project
     + storyId (int)       : id of the story
     + taskId (int)        : id of the task
+
 */
 pivotal.removeTask = function (projectId, storyId, taskId, cb) {
     pivotal.apiCall("DELETE", ["projects", projectId, "stories", storyId, "tasks", taskId], null, null, null, cb);
