@@ -731,7 +731,7 @@ pivotal.toXml = function (data) {
                     break;
 
                 default:
-                    val = sanitize(data[d]).entityEncode();
+                    val = sanitize(data[d].toString()).entityEncode();
                     break;
 
             }
