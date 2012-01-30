@@ -3,7 +3,7 @@
     "description" : "API library for PivotalTracker",
     "keywords" : [ "pivotal", "tracker", "pivotaltracker" ],
     "homepage" : "https://github.com/Wizcorp/node-pivotal",
-    "version" : "0.1.1",
+    "version" : "0.1.2",
     "author" : "Marc Trudel <mtrudel@wizcorp.jp>",
     "contributors" : [],
     "engines" : {

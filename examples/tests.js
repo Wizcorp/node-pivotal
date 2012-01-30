@@ -10,7 +10,7 @@ var pivotal = require("pivotal"),
 
 async.waterfall(tests = [
         function (cb) {
-            pivotal.useToken(defaultProjectId);
+            pivotal.useToken(process.env.token);
             return cb(null, []);
         },
         function (errStack, cb) {
