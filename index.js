@@ -390,7 +390,7 @@ pivotal.addStoryComment = function (projectId, storyId, comment, cb) {
 
 */
 pivotal.updateStory = function (projectId, storyId, storyData, cb) {
-    pivotal.apiCall("POST", ["projects", projectId, "stories", storyId], null, { story : storyData }, null, cb);
+    pivotal.apiCall("PUT", ["projects", projectId, "stories", storyId], null, { story : storyData }, null, cb);
 };
 
 /**
