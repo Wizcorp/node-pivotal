@@ -1,5 +1,5 @@
 unit:
-	find vows/ -name "*.js" -exec node {} \;
+	find tests/ -name "*.js" -exec node {} \;
 
 lint:
 	find . -name "*.js" -not -regex "^\./node_modules\(.*\)" -exec ./node_modules/jslint/bin/jslint.js --sloppy --node --white --forin false {} \;

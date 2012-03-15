@@ -1,7 +1,7 @@
 /*jslint
     forin: true
 */
-var pivotal = require("pivotal"),
+var pivotal = require("../index.js"),
     colors  = require("colors"),
     async   = require("async"),
     tests   = null,
@@ -10,7 +10,7 @@ var pivotal = require("pivotal"),
 
 async.waterfall(tests = [
         function (cb) {
-            pivotal.useToken(defaultProjectId);
+            pivotal.useToken(process.env.token);
             return cb(null, []);
         },
         function (errStack, cb) {
