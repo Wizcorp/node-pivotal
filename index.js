@@ -50,15 +50,7 @@ var pivotal = {
 
 */
 pivotal.getToken = function (user, pass, cb) {
-    this.apiCall("POST", ["tokens", "active"], null, querystring.stringify({"username": user, "password" : pass}), function (res) {
-
-        if (res.token) {
-            this.token = res.token.guid;
-            return cb(this.token);
-        }
-
-        return cb(false);
-    });
+    pivotal.apiCall("POST", ["tokens", "active"], null, querystring.stringify({"username": user, "password" : pass}), null, cb);
 };
 
 /**
@@ -557,7 +549,7 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
 
     // Build Request URL
     var path        =  "/services/v3/" + pathSegments.join("/"),
-        xmlData     = null,
+        postData     = null,
         options     = null,
         req         = null,
         boundaryKey = null;
@@ -583,9 +575,15 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
 
     // format data if required
     if (data) {
-        xmlData                           = this.toXml(data);
-        options.headers["Content-Length"] = xmlData.length;
-        options.headers["Content-Type"]   = "application/xml";
+        if(typeof(data) === "string"){
+            postData = data;
+        }
+        else {
+            postData = this.toXml(data);
+            options.headers["Content-Type"]   = "application/xml";
+        }
+
+        options.headers["Content-Length"] = postData.length;
     }
 
     if (file) {
@@ -662,8 +660,8 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
     });
 
     // PUT / POST data
-    if (xmlData) {
-        return req.end(xmlData);
+    if (postData) {
+        return req.end(postData);
     }
 
     /*

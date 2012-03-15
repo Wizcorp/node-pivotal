@@ -1,7 +1,7 @@
 /*jslint
     forin: true
 */
-var pivotal = require("pivotal"),
+var pivotal = require("../index.js"),
     colors  = require("colors"),
     async   = require("async"),
     tests   = null,
