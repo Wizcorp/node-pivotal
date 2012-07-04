@@ -245,6 +245,25 @@ pivotal.getIterations = function (projectId, filters, cb) {
     pivotal.apiCall("GET", url, filters, null, null, cb);
 };
 
+
+/**
+    ### pivotal.getCurrentIteration : get a project current iteration
+
+    ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
+
+    __Arguments__
+
+    + projectId (int)     : id of the project
+    + membershipId (int)  : id of the member
+
+*/
+pivotal.getCurrentIteration = function (projectId, cb) {
+
+    var url = ["projects", projectId, "iterations", "current"];
+
+    pivotal.apiCall("GET", url, null, null, null, cb);
+};
+
 /**
     ### pivotal.getStories: Get a list of stories for this project
 
