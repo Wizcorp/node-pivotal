@@ -145,6 +145,14 @@ __Arguments__
 + projectId (int)     : id of the project
 + membershipId (int)  : id of the member
 
+### pivotal.getDoneIterations: get a project completed iterations
+
+ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
+
+__Arguments__
+
++ projectId (int)     : id of the project
+
 ### pivotal.getCurrentIteration : get a project current iteration
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
@@ -153,6 +161,22 @@ __Arguments__
 
 + projectId (int)     : id of the project
 + membershipId (int)  : id of the member
+
+### pivotal.getBacklogIterations: get a project backlog
+
+ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
+
+__Arguments__
+
++ projectId (int)     : id of the project
+
+### pivotal.getCurrentBacklogIterations: get a project backlog and current iterations
+
+ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
+
+__Arguments__
+
++ projectId (int)     : id of the project
 
 ### pivotal.getStories: Get a list of stories for this project
 
