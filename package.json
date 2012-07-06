@@ -5,7 +5,7 @@
     "homepage" : "https://github.com/Wizcorp/node-pivotal",
     "version" : "0.1.3",
     "author" : "Marc Trudel <mtrudel@wizcorp.jp>",
-    "contributors" : [],
+    "contributors" : ["Sonny Michaud <michaud.sonny@gmail.com (http://github.com/sonnym)"],
     "engines" : {
         "node": ">=0.4.12"
     },
