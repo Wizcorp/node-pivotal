@@ -16,6 +16,10 @@
 
     You can also retrieve the token initially by using the pivotal.getToken function
 
+    ## Contributing
+
+    When making changes to the library, please run `make doc` before submitting pull requests.
+
     ## For more information:
 
     - [PivotalTracker API v3 Documentation](https://www.pivotaltracker.com/help/api?version=v3 "PivotalTracker")

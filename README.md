@@ -15,6 +15,10 @@ pivotal.useToken("myToken");
 
 You can also retrieve the token initially by using the pivotal.getToken function
 
+## Contributing
+
+When making changes to the library, please run `make doc` before submitting pull requests.
+
 ## For more information:
 
 - [PivotalTracker API v3 Documentation](https://www.pivotaltracker.com/help/api?version=v3 "PivotalTracker")
@@ -133,6 +137,15 @@ __Arguments__
 + membershipId (int)  : id of the member
 
 ### pivotal.getIterations : get a project list of iterations
+
+ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
+
+__Arguments__
+
++ projectId (int)     : id of the project
++ membershipId (int)  : id of the member
+
+### pivotal.getCurrentIteration : get a project current iteration
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
 
