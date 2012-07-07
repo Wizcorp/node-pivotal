@@ -16,6 +16,10 @@
 
     You can also retrieve the token initially by using the pivotal.getToken function
 
+    ## Contributing
+
+    When making changes to the library, please run `make doc` before submitting pull requests.
+
     ## For more information:
 
     - [PivotalTracker API v3 Documentation](https://www.pivotaltracker.com/help/api?version=v3 "PivotalTracker")
@@ -243,6 +247,75 @@ pivotal.getIterations = function (projectId, filters, cb) {
     }
 
     pivotal.apiCall("GET", url, filters, null, null, cb);
+};
+
+/**
+    ### pivotal.getDoneIterations: get a project completed iterations
+
+    ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
+
+    __Arguments__
+
+    + projectId (int)     : id of the project
+
+*/
+pivotal.getDoneIterations = function (projectId, cb) {
+
+    var url = ["projects", projectId, "iterations", "done"];
+
+    pivotal.apiCall("GET", url, null, null, null, cb);
+};
+
+/**
+    ### pivotal.getCurrentIteration : get a project current iteration
+
+    ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
+
+    __Arguments__
+
+    + projectId (int)     : id of the project
+    + membershipId (int)  : id of the member
+
+*/
+pivotal.getCurrentIteration = function (projectId, cb) {
+
+    var url = ["projects", projectId, "iterations", "current"];
+
+    pivotal.apiCall("GET", url, null, null, null, cb);
+};
+
+/**
+    ### pivotal.getBacklogIterations: get a project backlog
+
+    ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
+
+    __Arguments__
+
+    + projectId (int)     : id of the project
+
+*/
+pivotal.getBacklogIterations = function (projectId, cb) {
+
+    var url = ["projects", projectId, "iterations", "backlog"];
+
+    pivotal.apiCall("GET", url, null, null, null, cb);
+};
+
+/**
+    ### pivotal.getCurrentBacklogIterations: get a project backlog and current iterations
+
+    ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
+
+    __Arguments__
+
+    + projectId (int)     : id of the project
+
+*/
+pivotal.getCurrentBacklogIterations = function (projectId, cb) {
+
+    var url = ["projects", projectId, "iterations", "current_backlog"];
+
+    pivotal.apiCall("GET", url, null, null, null, cb);
 };
 
 /**
