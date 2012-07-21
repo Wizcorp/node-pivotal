@@ -426,7 +426,7 @@ pivotal.addStoryAttachment = function (projectId, storyId, fileData, cb) {
 
 */
 pivotal.addStoryComment = function (projectId, storyId, comment, cb) {
-    pivotal.apiCall("PUT", ["projects", projectId, "stories", storyId, "notes"], null, { note: { text : comment } }, null, cb);
+    pivotal.apiCall("POST", ["projects", projectId, "stories", storyId, "notes"], null, { note: { text : comment } }, null, cb);
 };
 
 /**
