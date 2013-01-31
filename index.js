@@ -22,10 +22,27 @@
 
     ## Tests
 
-    Tests are located in test/ directory. Run them using
+    Tests are located in test/ directory. To run them you need to install the required dependencies
 
     ```shell
         npm install
+    ```
+
+    and either set your pivotal api-token as a variable
+
+    ```shell
+        export token=xxxxxxxxxxxxxx
+    ```
+
+    or your username and password (which will result in an additional test for creating the token)
+
+    ```shell
+        export username=tester
+        export password=testpw
+    ```
+    finally run the tests using:
+
+    ```shell
         make test
     ```
 
