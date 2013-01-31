@@ -25,6 +25,8 @@ When making changes to the library, please run `make doc` before submitting pull
 
 ## API methods
 
+For examples see tests/test.js
+
 ### pivotal.getToken : retrieve a user's token
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#retrieve_token_post
