@@ -5,13 +5,34 @@ var pivotal = require("../index.js"),
     colors  = require("colors"),
     async   = require("async"),
     tests   = null,
-    resNum = 1,
+    resNum  = 1,
+    token   = process.env.token || null,
     defaultProjectId = process.argv[2] || null;
 
 async.waterfall(tests = [
-        function (cb) {
-            pivotal.useToken(process.env.token);
-            return cb(null, []);
+        function(cb) {
+            if(!token) {
+                var username = process.env.username,
+                    password = process.env.password;
+
+                console.log("Calling getToken".grey);
+                pivotal.getToken(username, password, function(err, res){
+                    if(err){
+                        console.error("Could not retrieve token".red.bold, err);
+                        return cb(null, [err]);
+                    }
+                    token = res.guid;
+                    return cb(null, []);
+                });
+            } else {
+                return cb(null, []);
+            }
+        },
+        function (errStack, cb) {
+            console.log("Token: ".grey, token);
+            console.log("");
+            pivotal.useToken(token);
+            return cb(null, errStack);
         },
         function (errStack, cb) {
 
@@ -24,7 +45,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, errStack);
+                    return cb(null, defaultProjectId, errStack);
                 }
 
                 console.log("Got activities (unfiltered)!".green, ret.activity.length.toString().grey);
@@ -40,12 +61,12 @@ async.waterfall(tests = [
         },
         function (projectId, errStack, cb) {
 
-            console.log("Calling getActivities (filtered)".grey);
+            console.log("Calling getProjectActivities (limit:2)".grey);
 
             var intResNum = resNum;
             resNum += 1;
 
-            pivotal.getActivities({project:projectId, limit:2}, function (err, ret) {
+            pivotal.getProjectActivities(projectId, {limit:2}, function (err, ret) {
 
                 var i;
 
@@ -55,7 +76,7 @@ async.waterfall(tests = [
                     return cb(null, errStack);
                 }
 
-                console.log("Got activities (filtered)!".green, ret.activity.length.toString().grey);
+                console.log("Got project activities!".green, ret.activity.length.toString().grey);
 
                 if (pivotal.debug) {
                     for(i in ret.activities.activity) {
@@ -72,23 +93,24 @@ async.waterfall(tests = [
 
             pivotal.getProjects(function (err, ret) {
 
-                var i;
+                var i,
+                    project = (ret.project).isArray ? ret.project[0] : ret.project;
 
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, errStack);
+                    return cb(null, defaultProjectId, errStack);
                 }
 
-                console.log("Got projects!".green, ret.project.length.toString().grey);
+                console.log("Got projects!".green);
 
                 if (pivotal.debug) {
                     for (i in ret.project) {
-                        console.log("Got project:".green, JSON.stringify(ret.project[i]).grey);
+                        console.log("Got project:".green, JSON.stringify(project).grey);
                     }
                 }
 
-                return cb(null, defaultProjectId || ret.project[0].id, errStack);
+                return cb(null, defaultProjectId || project.id, errStack);
             });
         },
         function (projectId, errStack, cb) {
@@ -102,7 +124,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, errStack);
+                    return cb(null, defaultProjectId, errStack);
                 }
 
                 console.log("Got project!".green, ret.name.grey);
@@ -110,6 +132,81 @@ async.waterfall(tests = [
                 if (pivotal.debug) {
                     for(i in ret.project) {
                         console.log("Got project attribute:".green, JSON.stringify(ret.project[i]).grey);
+                    }
+                }
+
+                return cb(null, projectId, errStack);
+            });
+        },
+        function (projectId, errStack, cb) {
+
+            console.log("Calling getIterations (limit:5)".grey, projectId);
+
+            pivotal.getIterations(projectId, { limit:5 }, function (err, ret) {
+
+                var i;
+
+                if (err) {
+                    console.log("Error".red, JSON.stringify(err));
+                    errStack.push(err);
+                    return cb(null, defaultProjectId, errStack);
+                }
+
+                console.log("Got project's iterations!".green, ret.iteration.length);
+
+                if (pivotal.debug) {
+                    for (i in ret.iteration) {
+                        console.log("Got project iteration:".green, JSON.stringify(ret.iteration[i]).grey);
+                    }
+                }
+
+                return cb(null, projectId, errStack);
+            });
+        },
+        function (projectId, errStack, cb) {
+
+            console.log("Calling getCurrentIteration".grey, projectId);
+
+            pivotal.getCurrentIteration(projectId, function (err, ret) {
+
+                var i;
+
+                if (err) {
+                    console.log("Error".red, JSON.stringify(err));
+                    errStack.push(err);
+                    return cb(null, defaultProjectId, errStack);
+                }
+
+                console.log("Got project's current iteration!".green, ret.iteration.number);
+
+                if (pivotal.debug) {
+                    for(i in ret.iteration) {
+                        console.log("Got project iteration attribute:".green, JSON.stringify(ret.iteration[i]).grey);
+                    }
+                }
+
+                return cb(null, projectId, errStack);
+            });
+        },
+        function (projectId, errStack, cb) {
+
+            console.log("Calling getDoneIterations (limit:3)".grey, projectId);
+
+            pivotal.getDoneIterations(projectId, { limit: 3 }, function (err, ret) {
+
+                var i;
+
+                if (err) {
+                    console.log("Error".red, JSON.stringify(err));
+                    errStack.push(err);
+                    return cb(null, defaultProjectId, errStack);
+                }
+
+                console.log("Got project's done iteration!".green, ret.iteration.number);
+
+                if (pivotal.debug) {
+                    for(i in ret.iteration) {
+                        console.log("Got project iteration attribute:".green, JSON.stringify(ret.iteration[i]).grey);
                     }
                 }
 
@@ -152,7 +249,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, errStack);
+                    return cb(null, defaultProjectId, errStack);
                 }
 
                 console.log("Got project member!".green, ret.person.name.grey, ret.role);
@@ -184,7 +281,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, errStack);
+                    return cb(null, defaultProjectId, null, errStack);
                 }
 
                 console.log("Got project member!".green, ret.id, ret.role);
@@ -209,7 +306,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, errStack);
+                    return cb(null, defaultProjectId, errStack);
                 }
 
                 console.log("Dropped project member!".green, ret.id, ret.person.name, ret.role);
@@ -217,56 +314,6 @@ async.waterfall(tests = [
                 if (pivotal.debug) {
                     for (i in ret) {
                         console.log("Got project membership attribute:".green, JSON.stringify(ret[i]).grey);
-                    }
-                }
-
-                return cb(null, projectId, errStack);
-            });
-        },
-        function (projectId, errStack, cb) {
-
-            console.log("Calling getIterations (limited:5)".grey, projectId);
-
-            pivotal.getIterations(projectId, { limit:5 }, function (err, ret) {
-
-                var i;
-
-                if (err) {
-                    console.log("Error".red, JSON.stringify(err));
-                    errStack.push(err);
-                    return cb(null, errStack);
-                }
-
-                console.log("Got project's iterations!".green, ret.iteration.length);
-
-                if (pivotal.debug) {
-                    for (i in ret.iteration) {
-                        console.log("Got project iteration:".green, JSON.stringify(ret.iteration[i]).grey);
-                    }
-                }
-
-                return cb(null, projectId, errStack);
-            });
-        },
-        function (projectId, errStack, cb) {
-
-            console.log("Calling getIterations (current)".grey, projectId);
-
-            pivotal.getIterations(projectId, { group : "current" }, function (err, ret) {
-
-                var i;
-
-                if (err) {
-                    console.log("Error".red, JSON.stringify(err));
-                    errStack.push(err);
-                    return cb(null, errStack);
-                }
-
-                console.log("Got project's current iteration!".green, ret.iteration.number);
-
-                if (pivotal.debug) {
-                    for(i in ret.iteration) {
-                        console.log("Got project iteration attribute:".green, JSON.stringify(ret.iteration[i]).grey);
                     }
                 }
 
@@ -284,7 +331,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, errStack);
+                    return cb(null, defaultProjectId, errStack);
                 }
 
                 console.log("Got project's stories!".green, ret.story.length);
@@ -304,7 +351,7 @@ async.waterfall(tests = [
 
             pivotal.addStoryAttachment(projectId, 14690145, {
                 name: "example.js",
-                path: "pivotal.js"
+                path: "index.js"
             }, function (err, ret) {
 
                 if (err) {
@@ -315,9 +362,9 @@ async.waterfall(tests = [
 
                 console.log("Its working!".green, ret.status, ret.id);
 
-                return cb(null, projectId, errStack);
+                return cb(null, errStack);
             });
-        },
+        }
     ],
     function (fatalErr, errStack) {
         console.log("");
