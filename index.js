@@ -40,6 +40,7 @@
         export username=tester
         export password=testpw
     ```
+
     finally run the tests using:
 
     ```shell
