@@ -19,6 +19,15 @@ You can also retrieve the token initially by using the pivotal.getToken function
 
 When making changes to the library, please run `make doc` before submitting pull requests.
 
+## Tests
+
+Tests are located in tests/ directory. Run them using
+
+```shell
+    npm install
+    make test
+```
+
 ## For more information:
 
 - [PivotalTracker API v3 Documentation](https://www.pivotaltracker.com/help/api?version=v3 "PivotalTracker")
