@@ -44,10 +44,6 @@ __Arguments__
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#get_all_activity
 
-        and
-
-     https://www.pivotaltracker.com/help/api?version=v3#get_project_activity
-
 __Arguments__
 
 + filters : Limits the return data
@@ -55,6 +51,22 @@ __Arguments__
 ```javascript
 {
     project (int)       : project id
+    limit               : maximum return entries
+    occurred_since_date : earliest date for return entries
+    newer_than_version  : allows restricting the activity feed to only those items that have a greater than supplied version
+}
+```
+
+### pivotal.getProjectActivities: list activities for the projects you have access to
+
+ref: https://www.pivotaltracker.com/help/api?version=v3#get_project_activity
+
+__Arguments__
++ project (int) : project id
++ filters : Limits the return data
+
+```javascript
+{
     limit               : maximum return entries
     occurred_since_date : earliest date for return entries
     newer_than_version  : allows restricting the activity feed to only those items that have a greater than supplied version
@@ -143,7 +155,15 @@ ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
 __Arguments__
 
 + projectId (int)     : id of the project
-+ membershipId (int)  : id of the member
++ filters : Limits the return data
+
+```javascript
+{
+    group               : filter by iteration type [done|current|backlog|current_backlog]
+    limit               : maximum return entries
+    offset              : start from story num. N in the list
+}
+```
 
 ### pivotal.getDoneIterations: get a project completed iterations
 
@@ -152,6 +172,14 @@ ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
 __Arguments__
 
 + projectId (int)     : id of the project
++ filters : Limits the return data
+
+```javascript
+{
+    limit               : maximum return entries
+    offset              : start from story num. N in the list
+}
+```
 
 ### pivotal.getCurrentIteration : get a project current iteration
 
@@ -160,7 +188,6 @@ ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
 __Arguments__
 
 + projectId (int)     : id of the project
-+ membershipId (int)  : id of the member
 
 ### pivotal.getBacklogIterations: get a project backlog
 
@@ -169,6 +196,14 @@ ref: https://www.pivotaltracker.com/help/api?version=v3#get_iterations
 __Arguments__
 
 + projectId (int)     : id of the project
++ filters : Limits the return data
+
+```javascript
+{
+    limit               : maximum return entries
+    offset              : start from story num. N in the list
+}
+```
 
 ### pivotal.getCurrentBacklogIterations: get a project backlog and current iterations
 

@@ -26,6 +26,8 @@
 
     ## API methods
 
+    For examples see tests/test.js
+
 */
 var xml2js      = require("xml2js"),
     url         = require("url"),
@@ -74,10 +76,6 @@ pivotal.useToken = function (token) {
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#get_all_activity
 
-            and
-
-         https://www.pivotaltracker.com/help/api?version=v3#get_project_activity
-
     __Arguments__
 
     + filters : Limits the return data
@@ -102,6 +100,30 @@ pivotal.getActivities = function (filters, cb) {
     }
 
     pivotal.apiCall("GET", url, filters, null, null, cb);
+};
+
+/**
+    ### pivotal.getProjectActivities: list activities for the projects you have access to
+
+    ref: https://www.pivotaltracker.com/help/api?version=v3#get_project_activity
+
+    __Arguments__
+
+    + project (int) : project id
+    + filters : Limits the return data
+
+    ```javascript
+    {
+        limit               : maximum return entries
+        occurred_since_date : earliest date for return entries
+        newer_than_version  : allows restricting the activity feed to only those items that have a greater than supplied version
+    }
+    ```
+
+*/
+pivotal.getProjectActivities = function (projectId, filters, cb) {
+    filters.project = projectId;
+    pivotal.getActivities(filters, cb);
 };
 
 /**
@@ -234,7 +256,15 @@ pivotal.removeMembership = function (projectId, membershipId, cb) {
     __Arguments__
 
     + projectId (int)     : id of the project
-    + membershipId (int)  : id of the member
+    + filters : Limits the return data
+
+    ```javascript
+    {
+        group               : filter by iteration type [done|current|backlog|current_backlog]
+        limit               : maximum return entries
+        offset              : start from story num. N in the list
+    }
+    ```
 
 */
 pivotal.getIterations = function (projectId, filters, cb) {
@@ -257,13 +287,20 @@ pivotal.getIterations = function (projectId, filters, cb) {
     __Arguments__
 
     + projectId (int)     : id of the project
+    + filters : Limits the return data
+
+    ```javascript
+    {
+        limit               : maximum return entries
+        offset              : start from story num. N in the list
+    }
+    ```
 
 */
-pivotal.getDoneIterations = function (projectId, cb) {
+pivotal.getDoneIterations = function (projectId, filters, cb) {
 
-    var url = ["projects", projectId, "iterations", "done"];
-
-    pivotal.apiCall("GET", url, null, null, null, cb);
+    filters.group = "done";
+    pivotal.getIterations(projectId, filters, cb);
 };
 
 /**
@@ -274,14 +311,11 @@ pivotal.getDoneIterations = function (projectId, cb) {
     __Arguments__
 
     + projectId (int)     : id of the project
-    + membershipId (int)  : id of the member
 
 */
 pivotal.getCurrentIteration = function (projectId, cb) {
 
-    var url = ["projects", projectId, "iterations", "current"];
-
-    pivotal.apiCall("GET", url, null, null, null, cb);
+    pivotal.getIterations(projectId, { group: "current" }, cb);
 };
 
 /**
@@ -292,13 +326,20 @@ pivotal.getCurrentIteration = function (projectId, cb) {
     __Arguments__
 
     + projectId (int)     : id of the project
+    + filters : Limits the return data
+
+    ```javascript
+    {
+        limit               : maximum return entries
+        offset              : start from story num. N in the list
+    }
+    ```
 
 */
-pivotal.getBacklogIterations = function (projectId, cb) {
+pivotal.getBacklogIterations = function (projectId, filters, cb) {
 
-    var url = ["projects", projectId, "iterations", "backlog"];
-
-    pivotal.apiCall("GET", url, null, null, null, cb);
+    filters.group = "backlog";
+    pivotal.getIterations(projectId, filters, cb);
 };
 
 /**
@@ -313,9 +354,7 @@ pivotal.getBacklogIterations = function (projectId, cb) {
 */
 pivotal.getCurrentBacklogIterations = function (projectId, cb) {
 
-    var url = ["projects", projectId, "iterations", "current_backlog"];
-
-    pivotal.apiCall("GET", url, null, null, null, cb);
+    pivotal.apiCall("GET", url, { group: "current_backlog" }, null, null, cb);
 };
 
 /**
@@ -639,7 +678,7 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
             "Accept"         : "text/html,application/xhtml+xml,application/xml",
             "Host"           : "www.pivotaltracker.com",
             "Connection"     : "keep-alive",
-            "Content-Length" : 0,
+            "Content-Length" : 0
         },
         host    : "www.pivotaltracker.com",
         path    : path,
