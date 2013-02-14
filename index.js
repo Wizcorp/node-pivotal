@@ -149,6 +149,8 @@ pivotal.getActivities = function (filters, cb) {
 
 */
 pivotal.getProjectActivities = function (projectId, filters, cb) {
+
+    filters = filters || {};
     filters.project = projectId;
     pivotal.getActivities(filters, cb);
 };
@@ -326,6 +328,7 @@ pivotal.getIterations = function (projectId, filters, cb) {
 */
 pivotal.getDoneIterations = function (projectId, filters, cb) {
 
+    filters = filters || {};
     filters.group = "done";
     pivotal.getIterations(projectId, filters, cb);
 };
@@ -365,6 +368,7 @@ pivotal.getCurrentIteration = function (projectId, cb) {
 */
 pivotal.getBacklogIterations = function (projectId, filters, cb) {
 
+    filters = filters || {};
     filters.group = "backlog";
     pivotal.getIterations(projectId, filters, cb);
 };
