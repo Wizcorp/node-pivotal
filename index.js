@@ -41,6 +41,14 @@
         export password=testpw
     ```
 
+    for testing against a specific project/story/member
+
+    ```shell
+        export project_id=123456
+        export story_id=9876546
+        export member_id=192837
+    ```
+
     finally run the tests using:
 
     ```shell
