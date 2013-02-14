@@ -7,7 +7,12 @@ var pivotal = require("../index.js"),
     tests   = null,
     resNum  = 1,
     token   = process.env.token || null,
-    defaultProjectId = process.argv[2] || null;
+    debug   = (process.env.debug !== undefined),
+    defaultProjectId = parseInt(process.env.project_id,10) || null,
+    defaultStoryId = parseInt(process.env.story_id,10) || null,
+    defaultProjectMemberId = parseInt(process.env.member_id,10) || null;
+
+pivotal.debug = debug;
 
 async.waterfall(tests = [
         function(cb) {
@@ -94,13 +99,15 @@ async.waterfall(tests = [
             pivotal.getProjects(function (err, ret) {
 
                 var i,
-                    project = (ret.project).isArray ? ret.project[0] : ret.project;
+                    project;
 
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
                     return cb(null, defaultProjectId, errStack);
                 }
+
+                project = Object.prototype.toString.call(ret.project) === '[object Array]' ? ret.project[0] : ret.project;
 
                 console.log("Got projects!".green);
 
@@ -219,15 +226,17 @@ async.waterfall(tests = [
 
             pivotal.getMemberships(projectId, function (err, ret) {
 
-                var i;
+                var i, membership;
 
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, errStack);
+                    return cb(null, defaultProjectId, defaultProjectMemberId, errStack);
                 }
 
-                console.log("Got project members!".green, ret.membership.length.toString().grey);
+                console.log("Got project members!".green);
+
+                membership = Object.prototype.toString.call(ret.membership) === '[object Array]' ? ret.membership : [ret.membership];
 
                 if (pivotal.debug) {
                     for (i in ret.membership) {
@@ -235,7 +244,7 @@ async.waterfall(tests = [
                     }
                 }
 
-                return cb(null, projectId, ret.membership[0].id, errStack);
+                return cb(null, projectId, defaultProjectMemberId || membership[0].id, errStack);
             });
         },
         function (projectId, membershipId, errStack, cb) {
@@ -284,7 +293,7 @@ async.waterfall(tests = [
                     return cb(null, defaultProjectId, null, errStack);
                 }
 
-                console.log("Got project member!".green, ret.id, ret.role);
+                console.log("Added project member!".green, ret.id, "(" + ret.person.name + ", " + ret.role + ")");
 
                 if (pivotal.debug) {
                     for (i in ret) {
@@ -309,7 +318,7 @@ async.waterfall(tests = [
                     return cb(null, defaultProjectId, errStack);
                 }
 
-                console.log("Dropped project member!".green, ret.id, ret.person.name, ret.role);
+                console.log("Dropped project member!".green);
 
                 if (pivotal.debug) {
                     for (i in ret) {
@@ -326,14 +335,15 @@ async.waterfall(tests = [
 
             pivotal.getStories(projectId, { limit : 5 }, function (err, ret) {
 
-                var i;
+                var i,story;
 
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, defaultProjectId, errStack);
+                    return cb(null, defaultProjectId, defaultStoryId, errStack);
                 }
 
+                story = Object.prototype.toString.call(ret.story) === '[object Array]' ? ret.story : [ret.story];
                 console.log("Got project's stories!".green, ret.story.length);
 
                 if (pivotal.debug) {
@@ -342,14 +352,14 @@ async.waterfall(tests = [
                     }
                 }
 
-                return cb(null, projectId, errStack);
+                return cb(null, projectId, defaultStoryId || ret.story[0].id, errStack);
             });
         },
-        function (projectId, errStack, cb) {
+        function (projectId, storyId, errStack, cb) {
 
-            console.log("Calling addStoryAttachment".grey, projectId);
+            console.log("Calling addStoryAttachment".grey, projectId, storyId);
 
-            pivotal.addStoryAttachment(projectId, 14690145, {
+            pivotal.addStoryAttachment(projectId, storyId, {
                 name: "example.js",
                 path: "index.js"
             }, function (err, ret) {
