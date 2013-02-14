@@ -201,7 +201,7 @@ async.waterfall(tests = [
 
             pivotal.getDoneIterations(projectId, { limit: 3 }, function (err, ret) {
 
-                var i;
+                var i, iteration;
 
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
@@ -209,11 +209,13 @@ async.waterfall(tests = [
                     return cb(null, defaultProjectId, errStack);
                 }
 
-                console.log("Got project's done iteration!".green, ret.iteration.number);
+                iteration = Object.prototype.toString.call(ret.iteration) === '[object Array]' ? ret.iteration : [ret.iteration];
+
+                console.log("Got project's done iteration!".green, iteration[0].number);
 
                 if (pivotal.debug) {
                     for(i in ret.iteration) {
-                        console.log("Got project iteration attribute:".green, JSON.stringify(ret.iteration[i]).grey);
+                        console.log("Got project iteration attribute:".green, JSON.stringify(iteration[i]).grey);
                     }
                 }
 
