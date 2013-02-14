@@ -84,7 +84,7 @@ async.waterfall(tests = [
                 console.log("Got project activities!".green, ret.activity.length.toString().grey);
 
                 if (pivotal.debug) {
-                    for(i in ret.activities.activity) {
+                    for(i in ret.activity) {
                         console.log("Got activity:".green, JSON.stringify(ret.activity[i]).grey);
                     }
                 }
@@ -321,9 +321,7 @@ async.waterfall(tests = [
                 console.log("Dropped project member!".green);
 
                 if (pivotal.debug) {
-                    for (i in ret) {
-                        console.log("Got project membership attribute:".green, JSON.stringify(ret[i]).grey);
-                    }
+                    console.log(ret.grey);
                 }
 
                 return cb(null, projectId, errStack);
