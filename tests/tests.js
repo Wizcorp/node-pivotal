@@ -131,7 +131,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, defaultProjectId, errStack);
+                    return cb(null, projectId, errStack);
                 }
 
                 console.log("Got project!".green, ret.name.grey);
@@ -156,7 +156,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, defaultProjectId, errStack);
+                    return cb(null, projectId, errStack);
                 }
 
                 console.log("Got project's iterations!".green, ret.iteration.length);
@@ -181,7 +181,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, defaultProjectId, errStack);
+                    return cb(null, projectId, errStack);
                 }
 
                 console.log("Got project's current iteration!".green, ret.iteration.number);
@@ -206,7 +206,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, defaultProjectId, errStack);
+                    return cb(null, projectId, errStack);
                 }
 
                 iteration = Object.prototype.toString.call(ret.iteration) === '[object Array]' ? ret.iteration : [ret.iteration];
@@ -214,7 +214,7 @@ async.waterfall(tests = [
                 console.log("Got project's done iteration!".green, iteration[0].number);
 
                 if (pivotal.debug) {
-                    for(i in ret.iteration) {
+                    for(i in iteration) {
                         console.log("Got project iteration attribute:".green, JSON.stringify(iteration[i]).grey);
                     }
                 }
@@ -233,7 +233,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, defaultProjectId, defaultProjectMemberId, errStack);
+                    return cb(null, projectId, defaultProjectMemberId, errStack);
                 }
 
                 console.log("Got project members!".green);
@@ -260,7 +260,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, defaultProjectId, errStack);
+                    return cb(null, projectId, errStack);
                 }
 
                 console.log("Got project member!".green, ret.person.name.grey, ret.role);
@@ -292,7 +292,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, defaultProjectId, null, errStack);
+                    return cb(null, projectId, null, errStack);
                 }
 
                 console.log("Added project member!".green, ret.id, "(" + ret.person.name + ", " + ret.role + ")");
@@ -317,7 +317,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, defaultProjectId, errStack);
+                    return cb(null, projectId, errStack);
                 }
 
                 console.log("Dropped project member!".green);
@@ -340,7 +340,7 @@ async.waterfall(tests = [
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
-                    return cb(null, defaultProjectId, defaultStoryId, errStack);
+                    return cb(null, projectId, defaultStoryId, errStack);
                 }
 
                 story = Object.prototype.toString.call(ret.story) === '[object Array]' ? ret.story : [ret.story];
