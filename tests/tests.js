@@ -209,6 +209,11 @@ async.waterfall(tests = [
                     return cb(null, projectId, errStack);
                 }
 
+                if (!ret) {
+                    console.log("No project iterations found!".green);
+                    return cb(null, projectId, errStack);
+                }
+
                 iteration = Object.prototype.toString.call(ret.iteration) === '[object Array]' ? ret.iteration : [ret.iteration];
 
                 console.log("Got project's done iteration!".green, iteration[0].number);
@@ -335,8 +340,9 @@ async.waterfall(tests = [
 
             pivotal.getStories(projectId, { limit : 5 }, function (err, ret) {
 
-                var i,story;
+                var i, story;
 
+                console.log('callback:',  arguments);
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);

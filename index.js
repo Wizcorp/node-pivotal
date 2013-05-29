@@ -776,28 +776,36 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
                 return cb({code: this.statusCode, desc: "API returned an HTTP error"}, null);
             }
 
-            parser.parseString(content, function (err, ret) {
+            if (content === "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<nil-classes type=\"array\"/>\n") {
+                return cb(null, null);
+            }
 
-                pivotal.log("info", "Result:", content);
+            try {
+                parser.parseString(content, function (err, ret) {
 
-                if (err) {
+                    pivotal.log("info", "Result:", content);
 
-                    pivotal.log("error", "Result:", content);
+                    if (err) {
 
-                    err = {
-                        "errors" : {
-                            "error" : [ "Error while parsing PT HTTP service response", err ]
-                        }
-                    };
-                }
+                        pivotal.log("error", "Result:", content);
 
-                if (ret && ret.errors) {
-                    err = ret;
-                    ret = null;
-                }
+                        err = {
+                            "errors" : {
+                                "error" : [ "Error while parsing PT HTTP service response", err ]
+                            }
+                        };
+                    }
 
-                cb(err, ret);
-            });
+                    if (ret && ret.errors) {
+                        err = ret;
+                        ret = null;
+                    }
+
+                    cb(err, ret);
+                });
+            } catch (err) {
+                cb(err, null);
+            }
         });
     });
 
@@ -873,16 +881,10 @@ pivotal.toXml = function (data) {
     for(d in data){
         if (data.hasOwnProperty(d)) {
 
-            switch(typeof(data[d])){
-
-                case "object" :
+            if (typeof(data[d]) === "object") {
                     val = this.toXml(data[d]);
-                    break;
-
-                default:
+            } else {
                     val = sanitize(data[d].toString()).entityEncode();
-                    break;
-
             }
 
             ret += "<" + d + ">" + val + "</" + d + ">";
