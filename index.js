@@ -205,7 +205,7 @@ pivotal.getProject = function (projectId, cb) {
 */
 pivotal.addProject = function (projectData, cb) {
 
-    if (!projectData.no_owner) {
+    if (typeof projectData.no_owner === 'undefined') {
         projectData.no_owner = true;
     }
 
