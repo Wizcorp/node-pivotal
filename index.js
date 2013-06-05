@@ -393,7 +393,7 @@ pivotal.getBacklogIterations = function (projectId, filters, cb) {
 */
 pivotal.getCurrentBacklogIterations = function (projectId, cb) {
 
-    pivotal.apiCall("GET", url, { group: "current_backlog" }, null, null, cb);
+    pivotal.apiCall("GET", ["projects", projectId, "iterations"], { group: "current_backlog" }, null, null, cb);
 };
 
 /**
