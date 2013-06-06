@@ -340,7 +340,7 @@ async.waterfall(tests = [
 
             pivotal.getStories(projectId, { limit : 5 }, function (err, ret) {
 
-                var i, story;
+                var i, story, firstStory;
 
                 console.log('callback:',  arguments);
                 if (err) {
@@ -358,7 +358,8 @@ async.waterfall(tests = [
                     }
                 }
 
-                return cb(null, projectId, defaultStoryId || ret.story[0].id, errStack);
+                firstStory = (ret.story.length > 0) ? ret.story[0].id : null;
+                return cb(null, projectId, defaultStoryId || firstStory, errStack);
             });
         },
         function (projectId, storyId, errStack, cb) {
