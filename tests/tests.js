@@ -159,6 +159,11 @@ async.waterfall(tests = [
                     return cb(null, projectId, errStack);
                 }
 
+                if (!ret.iteration.length) {
+                    console.log("No iterations were found".green);
+                    return cb(null, projectId, errStack);
+                }
+
                 console.log("Got project's iterations!".green, ret.iteration.length);
 
                 if (pivotal.debug) {
