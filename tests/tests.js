@@ -342,7 +342,6 @@ async.waterfall(tests = [
 
                 var i, story;
 
-                console.log('callback:',  arguments);
                 if (err) {
                     console.log("Error".red, JSON.stringify(err));
                     errStack.push(err);
@@ -362,6 +361,11 @@ async.waterfall(tests = [
             });
         },
         function (projectId, storyId, errStack, cb) {
+
+            if (storyId === null) {
+                console.log("No stories found, skipping addStoryAttachment".grey, projectId);
+                return cb (null, errStack);
+            }
 
             console.log("Calling addStoryAttachment".grey, projectId, storyId);
 
