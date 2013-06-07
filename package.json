@@ -6,8 +6,9 @@
     "version" : "0.2.0",
     "author" : "Marc Trudel <mtrudel@wizcorp.jp>",
     "contributors" : [
-      "Sonny Michaud <michaud.sonny@gmail.com (http://github.com/sonnym)",
-      "Titus Ramczykowski (https://github.com/tiii)"
+      "Sonny Michaud <michaud.sonny@gmail.com> (http://github.com/sonnym)",
+      "Titus Ramczykowski (https://github.com/tiii)",
+      "Duncan Angus Wilkie <themrdnk@gmail.com> (http://github.com/mrdnk)"
     ],
     "engines" : {
         "node": ">=0.4.12"
