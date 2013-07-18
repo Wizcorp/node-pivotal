@@ -1,5 +1,7 @@
 # node-pivotal : Node.JS API Library for PivotalTracker
 
+[![NPM](https://nodei.co/npm/<package>.png)](https://nodei.co/npm/<package>/)
+
 License: MIT
 
 To install:
@@ -99,6 +101,7 @@ __Arguments__
 ref: https://www.pivotaltracker.com/help/api?version=v3#get_project_activity
 
 __Arguments__
+
 + project (int) : project id
 + filters : Limits the return data
 

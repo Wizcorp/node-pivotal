@@ -1,6 +1,8 @@
 /**
     # node-pivotal : Node.JS API Library for PivotalTracker
 
+    [![NPM](https://nodei.co/npm/<package>.png)](https://nodei.co/npm/<package>/)
+
     License: MIT
 
     To install:
