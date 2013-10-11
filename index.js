@@ -108,6 +108,18 @@ Pivotal.getToken = function (user, pass, cb) {
 };
 
 /**
+    ### pivotal.useToken : set the token to use for all Pivotal callso
+
+    __Arguments__
+
+   + token: A valid Pivotal Token
+
+*/
+Pivotal.prototype.useToken = function (token) {
+    this.token = token;
+}
+
+/**
     ### pivotal.getActivities: list activities for the projects you have access to
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#get_all_activity
