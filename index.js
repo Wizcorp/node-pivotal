@@ -756,7 +756,7 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
             options.headers["Content-Type"]   = "application/xml";
         }
 
-        options.headers["Content-Length"] = postData.length;
+        options.headers["Content-Length"] = Buffer.byteLength(postData, 'utf8');
     }
 
     if (file) {
@@ -767,10 +767,10 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
             options.headers["Content-Length"]   = fs.statSync(file.path).size;
         }
         else {
-            options.headers["Content-Length"]   = file.data.length;
+            options.headers["Content-Length"]   = Buffer.byteLength(file.data, 'utf8');
         }
 
-        options.headers["Content-Length"]   += 196 + file.name.length;
+        options.headers["Content-Length"]   += 196 + Buffer.byteLength(file.name, 'utf8');
 
         options.headers.Expect = "100-continue";
         options.headers["Content-Type"]         = "multipart/form-data; boundary=----------------------------" + boundaryKey;
