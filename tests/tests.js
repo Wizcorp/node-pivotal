@@ -1,7 +1,8 @@
 /*jslint
     forin: true
 */
-var pivotal = require("../index.js"),
+var Pivotal = require("../index.js"),
+    pivotal = null,
     colors  = require("colors"),
     async   = require("async"),
     tests   = null,
@@ -12,7 +13,7 @@ var pivotal = require("../index.js"),
     defaultStoryId = parseInt(process.env.story_id,10) || null,
     defaultProjectMemberId = parseInt(process.env.member_id,10) || null;
 
-pivotal.debug = debug;
+Pivotal.debug = debug;
 
 async.waterfall(tests = [
         function(cb) {
@@ -21,7 +22,7 @@ async.waterfall(tests = [
                     password = process.env.password;
 
                 console.log("Calling getToken".grey);
-                pivotal.getToken(username, password, function(err, res){
+                Pivotal.getToken(username, password, function(err, res){
                     if(err){
                         console.error("Could not retrieve token".red.bold, err);
                         return cb(null, [err]);
@@ -36,7 +37,7 @@ async.waterfall(tests = [
         function (errStack, cb) {
             console.log("Token: ".grey, token);
             console.log("");
-            pivotal.useToken(token);
+            pivotal = new Pivotal(token);
             return cb(null, errStack);
         },
         function (errStack, cb) {

@@ -13,7 +13,7 @@
 
     ```javascript
     var pivotal = require("pivotal");
-    pivotal.useToken("myToken");
+    this.useToken("myToken");
     ```
 
     You can also retrieve the token initially by using the pivotal.getToken function
@@ -73,13 +73,24 @@ var xml2js      = require("xml2js"),
     sanitize    = require("validator").sanitize,
     https       = require("https");
 
+/**
+    ### pivotal constructor : set the token to use for all Pivotal callso
+
+    __Arguments__
+
+    + token: A valid Pivotal Token
+
+*/
+var Pivotal = function (token) {
+    this.token = token;
+};
+
 /*
    Switching debug to true will print output to the console.
    Only useful for debugging this API
 */
-var pivotal = {
-    debug: false
-};
+Pivotal.debug = false;
+
 
 /**
     ### pivotal.getToken : retrieve a user's token
@@ -92,8 +103,8 @@ var pivotal = {
     + pass : the user's password
 
 */
-pivotal.getToken = function (user, pass, cb) {
-    pivotal.apiCall("POST", ["tokens", "active"], null, querystring.stringify({"username": user, "password" : pass}), null, cb);
+Pivotal.getToken = function (user, pass, cb) {
+    Pivotal.apiCall("POST", ["tokens", "active"], null, querystring.stringify({"username": user, "password" : pass}), null, cb);
 };
 
 /**
@@ -101,12 +112,12 @@ pivotal.getToken = function (user, pass, cb) {
 
     __Arguments__
 
-    + token: A valid Pivotal Token
+   + token: A valid Pivotal Token
 
 */
-pivotal.useToken = function (token) {
+Pivotal.prototype.useToken = function (token) {
     this.token = token;
-};
+}
 
 /**
     ### pivotal.getActivities: list activities for the projects you have access to
@@ -127,7 +138,7 @@ pivotal.useToken = function (token) {
     ```
 
 */
-pivotal.getActivities = function (filters, cb) {
+Pivotal.prototype.getActivities = function (filters, cb) {
     var url = ["activities"];
 
     if (filters && filters.project) {
@@ -136,7 +147,7 @@ pivotal.getActivities = function (filters, cb) {
         delete filters.project;
     }
 
-    pivotal.apiCall("GET", url, filters, null, null, cb);
+    this.apiCall("GET", url, filters, null, null, cb);
 };
 
 /**
@@ -158,11 +169,11 @@ pivotal.getActivities = function (filters, cb) {
     ```
 
 */
-pivotal.getProjectActivities = function (projectId, filters, cb) {
+Pivotal.prototype.getProjectActivities = function (projectId, filters, cb) {
 
     filters = filters || {};
     filters.project = projectId;
-    pivotal.getActivities(filters, cb);
+    this.getActivities(filters, cb);
 };
 
 /**
@@ -170,8 +181,8 @@ pivotal.getProjectActivities = function (projectId, filters, cb) {
 
     ref: https://www.pivotaltracker.com/help/api?version=v3#get_project_all_projects
 */
-pivotal.getProjects = function (cb) {
-    pivotal.apiCall("GET", ["projects"], null, null, null, cb);
+Pivotal.prototype.getProjects = function (cb) {
+    this.apiCall("GET", ["projects"], null, null, null, cb);
 };
 
 /**
@@ -184,8 +195,8 @@ pivotal.getProjects = function (cb) {
     + id (int) : id of the project
 
 */
-pivotal.getProject = function (projectId, cb) {
-    pivotal.apiCall("GET", ["projects", projectId], null, null, null, cb);
+Pivotal.prototype.getProject = function (projectId, cb) {
+    this.apiCall("GET", ["projects", projectId], null, null, null, cb);
 };
 
 /**
@@ -205,13 +216,13 @@ pivotal.getProject = function (projectId, cb) {
     ```
 
 */
-pivotal.addProject = function (projectData, cb) {
+Pivotal.prototype.addProject = function (projectData, cb) {
 
     if (typeof projectData.no_owner === 'undefined') {
         projectData.no_owner = true;
     }
 
-    pivotal.apiCall("POST", ["projects"], null, { project : projectData }, null, cb);
+    this.apiCall("POST", ["projects"], null, { project : projectData }, null, cb);
 };
 
 /**
@@ -224,8 +235,8 @@ pivotal.addProject = function (projectData, cb) {
     + projectId (int) : id of the project
 
 */
-pivotal.getMemberships = function (projectId, cb) {
-    pivotal.apiCall("GET", ["projects", projectId, "memberships"], null, null, null, cb);
+Pivotal.prototype.getMemberships = function (projectId, cb) {
+    this.apiCall("GET", ["projects", projectId, "memberships"], null, null, null, cb);
 };
 
 /**
@@ -239,8 +250,8 @@ pivotal.getMemberships = function (projectId, cb) {
     + membershipId (int)  : id of the member
 
 */
-pivotal.getMembership = function (projectId, membershipId, cb) {
-    pivotal.apiCall("GET", ["projects", projectId, "memberships", membershipId], null, null, null, cb);
+Pivotal.prototype.getMembership = function (projectId, membershipId, cb) {
+    this.apiCall("GET", ["projects", projectId, "memberships", membershipId], null, null, null, cb);
 };
 
 /**
@@ -268,8 +279,8 @@ pivotal.getMembership = function (projectId, membershipId, cb) {
     an email asking him to join if he does not have a project already.
 
 */
-pivotal.addMembership = function (projectId, membershipData, cb) {
-    pivotal.apiCall("POST", ["projects", projectId, "memberships"], null, { "membership" : membershipData }, null, cb);
+Pivotal.prototype.addMembership = function (projectId, membershipData, cb) {
+    this.apiCall("POST", ["projects", projectId, "memberships"], null, { "membership" : membershipData }, null, cb);
 };
 
 /**
@@ -283,8 +294,8 @@ pivotal.addMembership = function (projectId, membershipData, cb) {
     + membershipId (int)  : id of the member
 
 */
-pivotal.removeMembership = function (projectId, membershipId, cb) {
-    pivotal.apiCall("DELETE", ["projects", projectId, "memberships", membershipId], null, null, null, cb);
+Pivotal.prototype.removeMembership = function (projectId, membershipId, cb) {
+    this.apiCall("DELETE", ["projects", projectId, "memberships", membershipId], null, null, null, cb);
 };
 
 /**
@@ -306,7 +317,7 @@ pivotal.removeMembership = function (projectId, membershipId, cb) {
     ```
 
 */
-pivotal.getIterations = function (projectId, filters, cb) {
+Pivotal.prototype.getIterations = function (projectId, filters, cb) {
 
     var url = ["projects", projectId, "iterations"];
 
@@ -315,7 +326,7 @@ pivotal.getIterations = function (projectId, filters, cb) {
         delete filters.group;
     }
 
-    pivotal.apiCall("GET", url, filters, null, null, cb);
+    this.apiCall("GET", url, filters, null, null, cb);
 };
 
 /**
@@ -336,11 +347,11 @@ pivotal.getIterations = function (projectId, filters, cb) {
     ```
 
 */
-pivotal.getDoneIterations = function (projectId, filters, cb) {
+Pivotal.prototype.getDoneIterations = function (projectId, filters, cb) {
 
     filters = filters || {};
     filters.group = "done";
-    pivotal.getIterations(projectId, filters, cb);
+    this.getIterations(projectId, filters, cb);
 };
 
 /**
@@ -353,9 +364,9 @@ pivotal.getDoneIterations = function (projectId, filters, cb) {
     + projectId (int)     : id of the project
 
 */
-pivotal.getCurrentIteration = function (projectId, cb) {
+Pivotal.prototype.getCurrentIteration = function (projectId, cb) {
 
-    pivotal.getIterations(projectId, { group: "current" }, cb);
+    this.getIterations(projectId, { group: "current" }, cb);
 };
 
 /**
@@ -376,11 +387,11 @@ pivotal.getCurrentIteration = function (projectId, cb) {
     ```
 
 */
-pivotal.getBacklogIterations = function (projectId, filters, cb) {
+Pivotal.prototype.getBacklogIterations = function (projectId, filters, cb) {
 
     filters = filters || {};
     filters.group = "backlog";
-    pivotal.getIterations(projectId, filters, cb);
+    this.getIterations(projectId, filters, cb);
 };
 
 /**
@@ -393,9 +404,9 @@ pivotal.getBacklogIterations = function (projectId, filters, cb) {
     + projectId (int)     : id of the project
 
 */
-pivotal.getCurrentBacklogIterations = function (projectId, cb) {
+Pivotal.prototype.getCurrentBacklogIterations = function (projectId, cb) {
 
-    pivotal.apiCall("GET", ["projects", projectId, "iterations"], { group: "current_backlog" }, null, null, cb);
+    this.apiCall("GET", ["projects", projectId, "iterations"], { group: "current_backlog" }, null, null, cb);
 };
 
 /**
@@ -417,14 +428,14 @@ pivotal.getCurrentBacklogIterations = function (projectId, cb) {
     ```
 
 */
-pivotal.getStories = function (projectId, filters, cb) {
+Pivotal.prototype.getStories = function (projectId, filters, cb) {
     function isEmptyObject (obj) {
         for (var d in obj){
             return false;
         }
         return true;
     }
-    pivotal.apiCall("GET", ["projects", projectId, "stories"], filters, null, null, function (err, data) {
+    this.apiCall("GET", ["projects", projectId, "stories"], filters, null, null, function (err, data) {
         if (err) {
             cb(err);
         }
@@ -452,8 +463,8 @@ pivotal.getStories = function (projectId, filters, cb) {
     + storyId (int)       : id of the story
 
 */
-pivotal.getStory = function (projectId, storyId, cb) {
-    pivotal.apiCall("GET", ["projects", projectId, "stories", storyId], null, null, null, cb);
+Pivotal.prototype.getStory = function (projectId, storyId, cb) {
+    this.apiCall("GET", ["projects", projectId, "stories", storyId], null, null, null, cb);
 };
 
 /**
@@ -484,8 +495,8 @@ pivotal.getStory = function (projectId, storyId, cb) {
     ```
 
 */
-pivotal.addStory = function (projectId, storyData, cb) {
-    pivotal.apiCall("POST", ["projects", projectId, "stories"], null, { story : storyData }, null, cb);
+Pivotal.prototype.addStory = function (projectId, storyData, cb) {
+    this.apiCall("POST", ["projects", projectId, "stories"], null, { story : storyData }, null, cb);
 };
 
 /**
@@ -509,8 +520,8 @@ pivotal.addStory = function (projectId, storyData, cb) {
     ```
 
 */
-pivotal.addStoryAttachment = function (projectId, storyId, fileData, cb) {
-    pivotal.apiCall("POST", ["projects", projectId, "stories", storyId, "attachments"], null, null, fileData, cb);
+Pivotal.prototype.addStoryAttachment = function (projectId, storyId, fileData, cb) {
+    this.apiCall("POST", ["projects", projectId, "stories", storyId, "attachments"], null, null, fileData, cb);
 };
 
 /**
@@ -525,8 +536,8 @@ pivotal.addStoryAttachment = function (projectId, storyId, fileData, cb) {
     + comment (string)    : The text of the comment to add
 
 */
-pivotal.addStoryComment = function (projectId, storyId, comment, cb) {
-    pivotal.apiCall("POST", ["projects", projectId, "stories", storyId, "notes"], null, { note: { text : comment } }, null, cb);
+Pivotal.prototype.addStoryComment = function (projectId, storyId, comment, cb) {
+    this.apiCall("POST", ["projects", projectId, "stories", storyId, "notes"], null, { note: { text : comment } }, null, cb);
 };
 
 /**
@@ -554,8 +565,8 @@ pivotal.addStoryComment = function (projectId, storyId, comment, cb) {
     ```
 
 */
-pivotal.updateStory = function (projectId, storyId, storyData, cb) {
-    pivotal.apiCall("PUT", ["projects", projectId, "stories", storyId], null, { story : storyData }, null, cb);
+Pivotal.prototype.updateStory = function (projectId, storyId, storyData, cb) {
+    this.apiCall("PUT", ["projects", projectId, "stories", storyId], null, { story : storyData }, null, cb);
 };
 
 /**
@@ -577,7 +588,7 @@ pivotal.updateStory = function (projectId, storyId, storyData, cb) {
     ```
 
 */
-pivotal.moveStory = function (projectId, storyId, moveData, cb) {
+Pivotal.prototype.moveStory = function (projectId, storyId, moveData, cb) {
 
     var postData = {},
         m        = null;
@@ -588,7 +599,7 @@ pivotal.moveStory = function (projectId, storyId, moveData, cb) {
         }
     }
 
-    pivotal.apiCall("POST", ["projects", projectId, "stories", storyId, "moves"], postData, null, null, cb);
+    this.apiCall("POST", ["projects", projectId, "stories", storyId, "moves"], postData, null, null, cb);
 };
 
 /**
@@ -602,8 +613,8 @@ pivotal.moveStory = function (projectId, storyId, moveData, cb) {
     + storyId (int)       : id of the story
 
 */
-pivotal.removeStory = function (projectId, storyId, cb) {
-    pivotal.apiCall("DELETE", ["projects", projectId, "stories", storyId], null, null, null, cb);
+Pivotal.prototype.removeStory = function (projectId, storyId, cb) {
+    this.apiCall("DELETE", ["projects", projectId, "stories", storyId], null, null, null, cb);
 };
 
 /**
@@ -616,8 +627,8 @@ pivotal.removeStory = function (projectId, storyId, cb) {
     + projectId (int)     : id of the project
 
 */
-pivotal.deliverAllFinishedStories = function (projectId, cb) {
-    pivotal.apiCall("PUT", ["projects", projectId, "stories", "deliver_all_finished"], null, null, null, cb);
+Pivotal.prototype.deliverAllFinishedStories = function (projectId, cb) {
+    this.apiCall("PUT", ["projects", projectId, "stories", "deliver_all_finished"], null, null, null, cb);
 };
 
 /**
@@ -631,8 +642,8 @@ pivotal.deliverAllFinishedStories = function (projectId, cb) {
     + storyId (int)       : id of the story
 
 */
-pivotal.getTasks = function (projectId, storyId, cb) {
-    pivotal.apiCall("GET", ["projects", projectId, "stories", storyId, "tasks"], null, null, null, cb);
+Pivotal.prototype.getTasks = function (projectId, storyId, cb) {
+    this.apiCall("GET", ["projects", projectId, "stories", storyId, "tasks"], null, null, null, cb);
 };
 
 /**
@@ -647,8 +658,8 @@ pivotal.getTasks = function (projectId, storyId, cb) {
     + taskId (int)        : id of the task
 
 */
-pivotal.getTask = function (projectId, storyId, taskId, cb) {
-    pivotal.apiCall("GET", ["projects", projectId, "stories", storyId, "tasks", taskId], null, null, null, cb);
+Pivotal.prototype.getTask = function (projectId, storyId, taskId, cb) {
+    this.apiCall("GET", ["projects", projectId, "stories", storyId, "tasks", taskId], null, null, null, cb);
 };
 
 /**
@@ -670,8 +681,8 @@ pivotal.getTask = function (projectId, storyId, taskId, cb) {
     ```
 
 */
-pivotal.addTask = function (projectId, storyId, taskData, cb) {
-    pivotal.apiCall("POST", ["projects", projectId, "stories", storyId, "tasks"], null, { task : taskData }, null, cb);
+Pivotal.prototype.addTask = function (projectId, storyId, taskData, cb) {
+    this.apiCall("POST", ["projects", projectId, "stories", storyId, "tasks"], null, { task : taskData }, null, cb);
 };
 
 /**
@@ -694,8 +705,8 @@ pivotal.addTask = function (projectId, storyId, taskData, cb) {
     ```
 
 */
-pivotal.updateTask = function (projectId, storyId, taskId, taskData, cb) {
-    pivotal.apiCall("PUT", ["projects", projectId, "stories", storyId, "tasks", taskId], null, { task : taskData }, null, cb);
+Pivotal.prototype.updateTask = function (projectId, storyId, taskId, taskData, cb) {
+    this.apiCall("PUT", ["projects", projectId, "stories", storyId, "tasks", taskId], null, { task : taskData }, null, cb);
 };
 
 /**
@@ -710,11 +721,15 @@ pivotal.updateTask = function (projectId, storyId, taskId, taskData, cb) {
     + taskId (int)        : id of the task
 
 */
-pivotal.removeTask = function (projectId, storyId, taskId, cb) {
-    pivotal.apiCall("DELETE", ["projects", projectId, "stories", storyId, "tasks", taskId], null, null, null, cb);
+Pivotal.prototype.removeTask = function (projectId, storyId, taskId, cb) {
+    this.apiCall("DELETE", ["projects", projectId, "stories", storyId, "tasks", taskId], null, null, null, cb);
 };
 
-pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
+Pivotal.prototype.apiCall = function (method, pathSegments, query, data, file, cb) {
+    Pivotal.apiCall(method, pathSegments, query, data, file, cb, this.token);
+};
+
+Pivotal.apiCall = function (method, pathSegments, query, data, file, cb, token) {
 
     if (data && file) {
         throw new Error("The Pivotal API does not support file upload and XML POSTing at the same time");
@@ -735,7 +750,7 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
     // Request options
     options = {
         headers : {
-            "X-TrackerToken" : this.token,
+            "X-TrackerToken" : token,
             "Accept"         : "text/html,application/xhtml+xml,application/xml",
             "Host"           : "www.pivotaltracker.com",
             "Connection"     : "keep-alive",
@@ -752,7 +767,7 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
             postData = data;
         }
         else {
-            postData = this.toXml(data);
+            postData = Pivotal.toXml(data);
             options.headers["Content-Type"]   = "application/xml";
         }
 
@@ -777,7 +792,7 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
     }
 
     // Create request
-    pivotal.log("requesting", options.path, options.method, data);
+    Pivotal.log("requesting", options.path, options.method, data);
 
     req = https.request(options, function (res) {
 
@@ -804,11 +819,11 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
 
             parser.parseString(content, function (err, ret) {
 
-                pivotal.log("info", "Result:", content);
+                Pivotal.log("info", "Result:", content);
 
                 if (err) {
 
-                    pivotal.log("error", "Result:", content);
+                    Pivotal.log("error", "Result:", content);
 
                     err = {
                         "errors" : {
@@ -889,14 +904,14 @@ pivotal.apiCall = function (method, pathSegments, query, data, file, cb) {
 };
 
 // Debug logging
-pivotal.log = function(){
-    if (this.debug) {
+Pivotal.log = function(){
+    if (Pivotal.debug) {
         console.log.apply(null, arguments);
     }
 };
 
 // Format a JS object to XML string
-pivotal.toXml = function (data) {
+Pivotal.toXml = function (data) {
 
     var ret = "",
         val = null,
@@ -910,7 +925,7 @@ pivotal.toXml = function (data) {
         if (data.hasOwnProperty(d)) {
 
             if (typeof(data[d]) === "object") {
-                    val = this.toXml(data[d]);
+                    val = Pivotal.toXml(data[d]);
             } else {
                     val = sanitize(data[d].toString()).entityEncode();
             }
@@ -926,4 +941,4 @@ pivotal.toXml = function (data) {
     return ret;
 };
 
-module.exports = pivotal;
+module.exports = Pivotal;
