@@ -23,10 +23,10 @@
         "url" : "https://github.com/Wizcorp/node-pivotal.git"
     },
     "dependencies" : {
-        "async" : ">=0.1.15",
-        "colors" : ">=0.6.0-1",
-        "validator" : ">=0.3.9",
-        "xml2js" : ">=0.1.13"
+        "async" : "0.2.x",
+        "colors" : "0.6.x",
+        "validator" : "2.1.x",
+        "xml2js" : "0.4.x"
     },
     "devDependencies" : {
         "vows" : ">=0.6.1",
