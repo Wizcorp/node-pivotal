@@ -117,7 +117,7 @@ Pivotal.getToken = function (user, pass, cb) {
 */
 Pivotal.prototype.useToken = function (token) {
     this.token = token;
-}
+};
 
 /**
     ### pivotal.getActivities: list activities for the projects you have access to
@@ -218,7 +218,7 @@ Pivotal.prototype.getProject = function (projectId, cb) {
 */
 Pivotal.prototype.addProject = function (projectData, cb) {
 
-    if (typeof projectData.no_owner === 'undefined') {
+    if (projectData.no_owner === undefined) {
         projectData.no_owner = true;
     }
 
@@ -440,7 +440,7 @@ Pivotal.prototype.getStories = function (projectId, filters, cb) {
             cb(err);
         }
         if (isEmptyObject(data)) {
-            data = {story: []}
+            data = {story: []};
         }
         else if (isEmptyObject(data.story)) {
             data.story = [];
@@ -548,7 +548,9 @@ Pivotal.prototype.addStoryComment = function (projectId, storyId, comment, cb) {
     __Arguments__
 
     + projectId (int)     : id of the project
-    + storyData : data of the story
+    + storyId (int)       : id of the story
+    + storyData (obj)     : data of the story
+    + callback (function) : callback function
 
     ```javascript
     {
@@ -763,7 +765,7 @@ Pivotal.apiCall = function (method, pathSegments, query, data, file, cb, token) 
 
     // format data if required
     if (data) {
-        if(typeof(data) === "string"){
+        if (typeof data === "string"){
             postData = data;
         }
         else {
