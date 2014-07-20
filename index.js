@@ -12,8 +12,8 @@
     ## To use:
 
     ```javascript
-    var pivotal = require("pivotal");
-    this.useToken("myToken");
+    var Pivotal = require("pivotal");
+    var pivotal = new Pivotal("myToken");
     ```
 
     You can also retrieve the token initially by using the pivotal.getToken function
@@ -74,7 +74,7 @@ var xml2js      = require("xml2js"),
     https       = require("https");
 
 /**
-    ### pivotal constructor : set the token to use for all Pivotal callso
+    ### pivotal constructor : set the token to use for all Pivotal calls
 
     __Arguments__
 

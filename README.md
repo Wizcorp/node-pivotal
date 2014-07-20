@@ -11,8 +11,8 @@ To install:
 ## To use:
 
 ```javascript
-var pivotal = require("pivotal");
-pivotal.useToken("myToken");
+var Pivotal = require("pivotal");
+var pivotal = new Pivotal("myToken");
 ```
 
 You can also retrieve the token initially by using the pivotal.getToken function
@@ -64,6 +64,12 @@ finally run the tests using:
 
 For examples see tests/test.js
 
+### pivotal constructor : set the token to use for all Pivotal calls
+
+__Arguments__
+
++ token: A valid Pivotal Token
+
 ### pivotal.getToken : retrieve a user's token
 
 ref: https://www.pivotaltracker.com/help/api?version=v3#retrieve_token_post
@@ -77,7 +83,7 @@ __Arguments__
 
 __Arguments__
 
-+ token: A valid Pivotal Token
+   + token: A valid Pivotal Token
 
 ### pivotal.getActivities: list activities for the projects you have access to
 
@@ -341,7 +347,9 @@ ref: https://www.pivotaltracker.com/help/api?version=v3#update_story
 __Arguments__
 
 + projectId (int)     : id of the project
-+ storyData : data of the story
++ storyId (int)       : id of the story
++ storyData (obj)     : data of the story
++ callback (function) : callback function
 
 ```javascript
 {
