@@ -68,8 +68,7 @@ async.waterfall(tests = [
         function (projectId, errStack, cb) {
 
             console.log("Calling getProjectActivities (limit:2)".grey);
-
-            var intResNum = resNum;
+            
             resNum += 1;
 
             pivotal.getProjectActivities(projectId, {limit:2}, function (err, ret) {
